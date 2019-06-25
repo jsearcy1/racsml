@@ -1,4 +1,4 @@
-![alt text](https://github.com/jsearcy1/racsml/blob/master/assets/BMIPoster.png)
+![alt text](https://raw.githubusercontent.com/jsearcy1/racsml/master/assets/BMIPoster.png)
 
 
 BGMP Registration Open:
