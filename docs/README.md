@@ -1,4 +1,4 @@
-![alt text](assets/BMIPoster.png)
+![alt text](../assets/BMIPoster.png)
 
 
 BGMP Registration Open:
