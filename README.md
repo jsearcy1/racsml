@@ -10,7 +10,8 @@ and close the window.
 2) Launch a Jupyter Session. In the top Naviagation Bar click on Interactive Apps, and select Jupyter Notebook (Python3/Tensorflow).
 You should end with a form looking like:
 
-<img>
+![alt text](https://raw.githubusercontent.com/jsearcy1/racsml/master/assets/OpenOnDemand.png)
+
 
 Add the account you would like to run with, and click launch. Wait until your job starts, and connect. Navigate to racsml/notebooks and open Introduction.ipynb.
 
