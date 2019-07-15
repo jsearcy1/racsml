@@ -1,5 +1,19 @@
 # Getting Started with Talapas
-Coming Soon
+We can run these notebooks on Talapas using OpenOnDemand. Point your browser to https://talapas-ln2.uoregon.edu, and login using your talapas credentials. 
+
+1) First checkout this package. In the top bar select clusters Talapas Shell Access, and type
+
+`git clone https://github.com/jsearcy1/racsml.git`
+
+and close the window.
+
+2) Launch a Jupyter Session. In the top Naviagation Bar click on Interactive Apps, and select Jupyter Notebook (Python3/Tensorflow).
+You should end with a form looking like:
+
+<img>
+
+Add the account you would like to run with, and click launch. Wait until your job starts, and connect. Navigate to racsml/notebooks and open Introduction.ipynb.
+
 
 
 # Getting Started with Docker
