@@ -126,11 +126,12 @@ class CamelyOnPatch():
 #                print(x//32,y//32)
                 new_image[x//32,y//32,:]=color[0:3]
             pred_data.append(data)
-            mask[x//32,:]= model.predict(np.concatenate(pred_data,axis=0))
+            if model!=None:
+                mask[x//32,:]= model.predict(np.concatenate(pred_data,axis=0))
             
                 
-
-        plt.imshow(new_image)
+        return image,new_image,mask,[t1,t2]
+#        plt.imshow(new_image)
 #        plt.show()
         
 if __name__=="__main__":
