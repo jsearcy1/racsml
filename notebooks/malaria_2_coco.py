@@ -44,7 +44,7 @@ images_dir ='/home/jsearcy/Desktop/ML Data Sets/malaria/'
 use_list='all'
 #[1,2,3,4,5,6]
 
-def write_new_json(input_file,output_filename):
+def write_new_json(input_file,output_filename,folder):
     cat_dict={}
     cat_dict["ring"]=1
 #    cat_dict["red blood cell"]=2
@@ -90,7 +90,7 @@ def write_new_json(input_file,output_filename):
                                             })
             ann_id+=1
         if skip:continue
-        new_json["images"].append({"file_name":os.path.abspath(images_dir+image['image']['pathname']),
+        new_json["images"].append({"file_name":os.path.join(folder,image['image']['pathname']),
                                    "height": image['image']['shape']['r'],
                                    "width": image['image']['shape']['c'],
                                    "id":id_v})
@@ -103,10 +103,10 @@ def write_new_json(input_file,output_filename):
 train=json.load(open("/home/jsearcy/Desktop/ML Data Sets/malaria/training.json"))
 test=json.load(open("/home/jsearcy/Desktop/ML Data Sets/malaria/test.json"))
 
-write_new_json(train,'output_train.json')
-write_new_json(test,'output_test.json')
+write_new_json(train,'/home/jsearcy/UO Data Science Dropbox/Public Datasets/BBBC041o/train.json',folder='train')
+write_new_json(test,'/home/jsearcy/UO Data Science Dropbox/Public Datasets/BBBC041o/test.json',folder='test')
 
-
+oa.aosefoeji
 
 train_dataset = DataGenerator(load_images_into_memory=True, hdf5_dataset_path=None)
 train_dataset.parse_json(        images_dirs=images_dir,

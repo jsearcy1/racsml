@@ -19,7 +19,7 @@ scale_height=1200
 scale_width=1600
 
 
-def write_new_json(input_files,output_filename,output_folder):
+def write_new_json(input_files,output_folder):
     if not os.path.exists(output_folder):
         os.makedirs(os.path.join(output_folder,"train"))
         os.makedirs(os.path.join(output_folder,"develop"))
@@ -30,6 +30,8 @@ def write_new_json(input_files,output_filename,output_folder):
     test=0.05
 
     cat_dict={}
+#    cat_dict["background"]=0
+
     cat_dict["ring"]=1
 #    cat_dict["red blood cell"]=2
     cat_dict['trophozoite']=2
@@ -131,13 +133,13 @@ def write_new_json(input_files,output_filename,output_folder):
             id_v+=1
        
   
-    open(os.path.join(output_folder,'train',output_filename),"w").write(json.dumps(all_json[0]))
-    open(os.path.join(output_folder,'develop',output_filename),"w").write(json.dumps(all_json[1]))
-    open(os.path.join(output_folder,'test',output_filename),"w").write(json.dumps(all_json[2]))
+    open(os.path.join(output_folder,'train.json'),"w").write(json.dumps(all_json[0]))
+    open(os.path.join(output_folder,'develop.json'),"w").write(json.dumps(all_json[1]))
+    open(os.path.join(output_folder,'test.json'),"w").write(json.dumps(all_json[2]))
 
 
 train=json.load(open("/home/jsearcy/Desktop/ML Data Sets/malaria/training.json"))
 test=json.load(open("/home/jsearcy/Desktop/ML Data Sets/malaria/test.json"))
 
 #write_new_json(train,'output_train.json')
-write_new_json([test,train],'output.json','/home/jsearcy/Desktop/new_malaria/')
+write_new_json([test,train],'/projects/bgmp/shared/2019_ML_workshop/datasets/BBBC041o')

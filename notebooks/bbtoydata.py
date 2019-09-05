@@ -54,11 +54,13 @@ class BBToyData():
         
     def make_data(self,multi_object=False):
         
-        data=np.random.uniform(.1,.9,size=(10000,2,2))
 
-
-        start_size=500
-        final_size=100
+        if multi_object:
+            start_size=200
+            final_size=100
+        else:
+            start_size=200
+            final_size=50
         arrays=[]
         scores=[]
         train=[]
@@ -67,7 +69,7 @@ class BBToyData():
         
         labels=[]
         
-        for(index,_points) in enumerate(data):
+        for index in range(10000):
             if np.random.uniform() < 0.8:
                 train.append(index)
             if np.random.uniform() < 0.9:                   
@@ -85,8 +87,12 @@ class BBToyData():
             
             for i in range(n_objects):
                 _points=np.random.uniform(.1,.9,size=(2,2))
-                while self.area(_points) <.1 or self.area(_points)>.2 or self.smallest_dist(_points) < .05:
-                    _points=np.random.uniform(.1,.9,size=(2,2))
+                if multi_object:
+                    while self.area(_points) <0.1 or self.area(_points)>.5 or self.smallest_dist(_points) < .05:
+                        _points=np.random.uniform(.1,.9,size=(2,2))
+                else:
+                    while self.area(_points) <0.5 or self.area(_points)>.9 or self.smallest_dist(_points) < .05:
+                        _points=np.random.uniform(.1,.9,size=(2,2))
 
                 
                 #Put points in correct order
@@ -104,7 +110,7 @@ class BBToyData():
 
                 category=np.random.randint(4)
                 draw=ImageDraw.Draw(im)
-                bbox=[(x_i,y_i),x_f-x_i,y_f-y_i]
+                bbox=[x_i*final_size,y_i*final_size,(x_f-x_i)*final_size,(y_f-y_i)*final_size]
                 if category==0:
                     draw.rectangle(coords,outline=255.,fill=255.)
                     labels[-1].append([category,bbox])
