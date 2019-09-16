@@ -69,18 +69,19 @@ class BBToyData():
         
         labels=[]
         
-        for index in range(10000):
-            if np.random.uniform() < 0.8:
+        for index in range(20000):
+            select= np.random.uniform()
+            
+            if select < 0.8:
                 train.append(index)
-            if np.random.uniform() < 0.9:                   
+            elif select < 0.9:                   
                 test.append(index)
             else:
                 develop.append(index)
-            
  
             im=Image.fromarray(np.zeros((start_size,start_size)))
             if multi_object:
-                n_objects=np.random.randint(4)
+                n_objects=np.random.randint(10)
             else:
                 n_objects=np.random.uniform()<0.8 # 1 most of the time 0 otherwise
             labels.append([])
@@ -88,7 +89,7 @@ class BBToyData():
             for i in range(n_objects):
                 _points=np.random.uniform(.1,.9,size=(2,2))
                 if multi_object:
-                    while self.area(_points) <0.1 or self.area(_points)>.5 or self.smallest_dist(_points) < .05:
+                    while self.area(_points) <0.1 or self.area(_points)>.3 or self.smallest_dist(_points) < .05:
                         _points=np.random.uniform(.1,.9,size=(2,2))
                 else:
                     while self.area(_points) <0.5 or self.area(_points)>.9 or self.smallest_dist(_points) < .05:
@@ -132,14 +133,15 @@ class BBToyData():
             if np.isnan(array).any():pdb.set_trace()
             arrays.append(np.expand_dims(array,0))
 
-        
+        assert(len(train) > 20000*.7)
+
         output_data=np.concatenate(arrays)
         if multi_object:
-            np.save('bb_toy_split_multi',(test,train,develop))
+            np.save('bb_toy_split_multi',(train,develop,test))
             np.save('bb_toy_images_multi',output_data)
             pickle.dump(labels,open('bb_toy_labels_multi.pk','wb'))
         else:
-            np.save('bb_toy_split',(test,train,develop))
+            np.save('bb_toy_split',(train,develop,test))
             np.save('bb_toy_images',output_data)
             pickle.dump(labels,open('bb_toy_labels.pk','wb'))
 
