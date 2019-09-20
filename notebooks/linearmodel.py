@@ -37,7 +37,7 @@ class LinearModel():
         grad_v=[]
         path_v=[]
 
-        self.opt=tf.train.GradientDescentOptimizer(learning_rate)
+        self.opt=tf.train.GradientDescentOptimizer(learning_rate,use_locking=True)
         grads=self.opt.compute_gradients(self._loss,[self.slope,self.intercept])
         apply_g=self.opt.apply_gradients(grads)
 
@@ -49,8 +49,13 @@ class LinearModel():
             else:
                 batch=x
                 batch_y=y_true
+            _slopev,_interceptv=self.session.run([self.slope,self.intercept])
             
             out,_=self.session.run([grads,apply_g],feed_dict={self.x:batch,self.y_true:batch_y})
+
+            
             grad_v.append((out[0][0],out[1][0]))
-            path_v.append((out[0][1],out[1][1]))
+#           path_v.append((out[0][1],out[1][1]))
+            path_v.append((_slopev,_interceptv))
+
         return grad_v,path_v
