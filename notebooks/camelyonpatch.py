@@ -21,9 +21,10 @@ class CamelyOnPatch():
     def __init__(self,datadir):
    
         self.datadir=datadir
-        self.x_train=tf.keras.utils.HDF5Matrix(
+        print( os.path.join(datadir,'camelyonpatch_level_2_split_train_x.h5'))
+        self.X_train=tf.keras.utils.HDF5Matrix(
               os.path.join(datadir,'camelyonpatch_level_2_split_train_x.h5'),'x',normalizer=self.normalize)
-        self.y_train=tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_train_y.h5'),'y')
+        self.Y_train=np.squeeze(tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_train_y.h5'),'y'))
                                   
         
     
@@ -40,36 +41,80 @@ class CamelyOnPatch():
             
                 
             )  # randomly flip images
+        self.t1=[(48770.9,157277),
+            (48728.1,157343),
+            (48674,157402),
+            (48608.7,157442),
+            (48539.7,157475),
+            (48468.8,157509),
+            (48411,157557),
+            (48396.1,157632),
+            (48440.8,157695),
+            (48515.4,157718),
+            (48593.8,157716),
+            (48657.2,157669),
+            (48716.9,157621),
+            (48765.4,157555),
+            (48815.7,157499),
+            (48849.3,157429),
+            (48867.9,157352),
+            (48856.7,157277)]
+
+
+        self.t2=[(49124.3,155123),
+            (49178.3,155230),
+            (49163.5,155345),
+            (49183.1,155440),
+            (49230.9,155557),
+            (49231.5,155667),
+            (49170.1,155749),
+            (49155.2,155854),
+            (49170.1,155954),
+            (49202.5,156054),
+            (49244.9,156148),
+            (49344.6,156173),
+            (49394.5,156084),
+            (49414.4,155981),
+            (49456.7,155882),
+            (49389.4,155788),
+            (49379.5,155692),
+            (49367.1,155592),
+            (49382,155488),
+            (49354.6,155388),
+            (49327.2,155288),
+            (49297.3,155189),
+            (49270,155093),
+            (49178.2,154978)]
         
         
         
-        self.x_develop=tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_valid_x.h5'),'x',normalizer=self.normalize)
-        self.y_develop=np.array(tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_valid_y.h5'),'y'))
-        self.x_test=tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_test_x.h5'),'x',normalizer=self.normalize)
-        self.y_test=np.array(tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_test_y.h5'),'y'))
+        self.X_develop=tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_valid_x.h5'),'x',normalizer=self.normalize)
+        self.Y_develop=np.squeeze(np.array(tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_valid_y.h5'),'y')))
+        self.X_test=tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_test_x.h5'),'x',normalizer=self.normalize)
+        self.Y_test=np.squeeze(np.array(tf.keras.utils.HDF5Matrix(os.path.join(datadir,'camelyonpatch_level_2_split_test_y.h5'),'y')))
     
     def scan_tiff(self,tiff_file='/home/jsearcy/Desktop/ML Data Sets/pcamv1/test_013.tif',model=None):
         import openslide
         import matplotlib.pyplot as plt
         
         t1=[(48770.9,157277),
-        (48728.1,157343),
-        (48674,157402),
-        (48608.7,157442),
-        (48539.7,157475),
-        (48468.8,157509),
-        (48411,157557),
-        (48396.1,157632),
-        (48440.8,157695),
-        (48515.4,157718),
-        (48593.8,157716),
-        (48657.2,157669),
-        (48716.9,157621),
-        (48765.4,157555),
-        (48815.7,157499),
-        (48849.3,157429),
-        (48867.9,157352),
-        (48856.7,157277)]
+            (48728.1,157343),
+            (48674,157402),
+            (48608.7,157442),
+            (48539.7,157475),
+            (48468.8,157509),
+            (48411,157557),
+            (48396.1,157632),
+            (48440.8,157695),
+            (48515.4,157718),
+            (48593.8,157716),
+            (48657.2,157669),
+            (48716.9,157621),
+            (48765.4,157555),
+            (48815.7,157499),
+            (48849.3,157429),
+            (48867.9,157352),
+            (48856.7,157277)]
 
 
         t2=[(49115.9,155007),
@@ -126,12 +171,23 @@ class CamelyOnPatch():
 #                print(x//32,y//32)
                 new_image[x//32,y//32,:]=color[0:3]
             pred_data.append(data)
-            mask[x//32,:]= model.predict(np.concatenate(pred_data,axis=0))
+            if model!=None:
+                mask[x//32,:]= model.predict(np.concatenate(pred_data,axis=0))
             
                 
-
-        plt.imshow(new_image)
+        return image,new_image,mask,[t1,t2]
+#        plt.imshow(new_image)
 #        plt.show()
         
 if __name__=="__main__":
+    import matplotlib.pyplot as plt
     cp=CamelyOnPatch('/home/jsearcy/Desktop/ML Data Sets/pcamv1')
+    image,new_image,mask,[t1,t2]=cp.scan_tiff()
+    
+    f=plt.figure(figsize=(40,120))
+    img = plt.imshow(image)    
+    plt.scatter(*zip(*t1))
+    plt.scatter(*zip(*t2))
+    plt.axis('off')
+    f.savefig("../assets/full_slide.png", bbox_inches='tight')
+    plt.close(f)
